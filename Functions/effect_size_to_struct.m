@@ -1,4 +1,4 @@
-function effects_struct = tscore2struct(data_table)
+function effects_struct = effect_size_to_struct(data_table)
 
 structures = data_table.Structure;
 numbers = data_table.Area;

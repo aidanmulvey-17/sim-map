@@ -46,10 +46,6 @@
     % g, pooled variance, and all other demographic information
 %% Set Path information
 folderLocation = setDir('GoPath', true);
-try
-    rmpath("Archived")
-catch
-end
 warning ('off','all');
 %% Background Information
 
@@ -244,10 +240,10 @@ end
 layers_effects_table = array2table(combined_data, 'RowNames', row_labels, 'VariableNames', colNames); % descriptive table of effects across layers
 %% \\\\\ Structure Level Differences ///// We then move on to the structure-level differences
 % Bar Plots for IHC Structures
-PV_IHC_struct = tscore2struct(PV_IHC_dataframe);
-CB_IHC_struct = tscore2struct(CB_IHC_dataframe);
-CR_IHC_struct = tscore2struct(CR_IHC_dataframe);
-SST_IHC_struct = tscore2struct(SST_IHC_dataframe);
+PV_IHC_struct = effect_size_to_struct(PV_IHC_dataframe);
+CB_IHC_struct = effect_size_to_struct(CB_IHC_dataframe);
+CR_IHC_struct = effect_size_to_struct(CR_IHC_dataframe);
+SST_IHC_struct = effect_size_to_struct(SST_IHC_dataframe);
 
 PV_IHC_2_stats = struct2barh(PV_IHC_struct, areaIdentification, 'PV Effect Size IHC');
 CB_IHC_2_stats = struct2barh(CB_IHC_struct, areaIdentification, 'CB Effect Size IHC');
@@ -268,10 +264,10 @@ effect_CBSST_IHC_Hipp = compute_cohens(CB_IHC_struct.Hippocampus_effect(:, 2), S
 effect_SSTCR_IHC_Hipp = compute_cohens(SST_IHC_struct.Hippocampus_effect(:, 2), CR_IHC_struct.Hippocampus_effect(:, 2), {'IHC Hipp: SST vs. CR'});
 
 % Bar Plots for mRNA Structures
-PV_mRNA_struct = tscore2struct(PV_mRNA_dataframe);
-CB_mRNA_struct = tscore2struct(CB_mRNA_dataframe);
-CR_mRNA_struct = tscore2struct(CR_mRNA_dataframe);
-SST_mRNA_struct = tscore2struct(SST_mRNA_dataframe);
+PV_mRNA_struct = effect_size_to_struct(PV_mRNA_dataframe);
+CB_mRNA_struct = effect_size_to_struct(CB_mRNA_dataframe);
+CR_mRNA_struct = effect_size_to_struct(CR_mRNA_dataframe);
+SST_mRNA_struct = effect_size_to_struct(SST_mRNA_dataframe);
 
 PV_mRNA_2_stats = struct2barh(PV_mRNA_struct, areaIdentification, 'PV Effect Size mRNA');
 CB_mRNA_2_stats = struct2barh(CB_mRNA_struct, areaIdentification, 'CB Effect Size mRNA');
