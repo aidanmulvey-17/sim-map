@@ -15,3 +15,7 @@ Schizophrenia Interneuron Metanalysis (SIM) Mapping: A meta-analysis of GABAergi
 - EMMs across brain areas:
 <img width="589" height="363" alt="Screenshot 2026-04-22 at 1 27 05 PM" src="https://github.com/user-attachments/assets/30368b09-3b8e-4682-a15c-e0270d331112" />
 
+# Getting Started
+- Open SIM_main_script.m
+- Ensure that the Function directory and Raw data are in the path. setDir function should do this, but with any issues manually add path and set folderLocation to current folder location.
+
