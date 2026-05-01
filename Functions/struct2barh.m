@@ -4,7 +4,6 @@ function statsTable = struct2barh(inputStruct, areaIdentification, titleLabel)
 fields = fieldnames(inputStruct);
 fieldRanks = zeros(length(fields), 1);
 
-% 1. Determine Ranking
 for ii = 1:length(fields)
     rankName = fields{ii};
     areaRank = inputStruct.(rankName)(1);
@@ -14,7 +13,6 @@ end
 ranks = zeros(size(fieldRanks));
 ranks(rankIndx) = 1:length(fieldRanks);
 
-% 2. Initialize Stats Collection
 statsData = struct('Area', {}, 'Mean', {}, 'n', {}, 'pVal', {});
 numSEM = 2;
 

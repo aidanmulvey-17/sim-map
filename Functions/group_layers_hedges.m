@@ -1,6 +1,6 @@
 function [wholeArea_hedges, HC_meansG, SZ_meansG] = group_layers_hedges(HC_table, SZ_table)
-% Outputs Hedges' g for multi-layer studies (e.g. Chung et al. 2016)
-% Correctly pools layers within each subject group using proper pooled SD
+% Outputs Hedges' g for multi-layer studies
+% Pools layers within each subject group using proper pooled SD
 
 HC_meansG = zeros(height(HC_table), 3);  % Col1: SubjectID, Col2: mean density, Col3: SD
 SZ_meansG = zeros(height(SZ_table), 3);
@@ -52,7 +52,7 @@ for j = 1:height(SZ_table)
     SZ_meansG(j,:) = [SZ_table(j,1), mean_val, pooled_sd];
 end
 
-%% Step 2: Compute Hedges' g across all subjects
+%% Compute Hedges' g across all subjects
 valid = ~isnan(HC_meansG(:,2)) & ~isnan(SZ_meansG(:,2));
 HC = HC_meansG(valid, 2:3);
 SZ = SZ_meansG(valid, 2:3);
@@ -80,7 +80,7 @@ g  = J * d;
 % Sampling variance of Hedges' g
 var_g = J.^2 * ( (n_HC + n_SZ)/(n_HC*n_SZ) + d.^2/(2*(n_HC + n_SZ)) );
 
-% Output as table (easy to concatenate later)
+% Output as table
 wholeArea_hedges = table(g, var_g, n_HC + n_SZ, 'VariableNames', {'g', 'var_g', 'n_total'});
 
 end

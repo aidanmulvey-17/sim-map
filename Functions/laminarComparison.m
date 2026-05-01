@@ -1,6 +1,4 @@
 function laminarComparison(PV_pfc_sup,PV_pfc_deep, cellType, areasIncluded)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
 
     disp(append('--------------', cellType, ' in ', areasIncluded, '--------------'))
 [~, p] = ttest(squeeze(PV_pfc_sup));
@@ -42,9 +40,4 @@ function laminarComparison(PV_pfc_sup,PV_pfc_deep, cellType, areasIncluded)
      ylabel('Count'); xlabel('t-score');
      [~, p] = ttest2(PV_pfc_sup, PV_pfc_deep);
      title(append(cellType, ' Cells in ', areasIncluded,' Superficial vs. Deep Layers | p = ', num2str(p)));
-
-     % folderPath = 'C:\Users\mulveyag\Documents\Lightsheet Project\Interneuron Analysis\Figures';
-     % fileName = 'PV_cx_v_subcx.eps';
-     % fileName = fullfile(folderPath, fileName);
-     % exportgraphics(gcf,fileName,'BackgroundColor','none','ContentType','vector')
 end

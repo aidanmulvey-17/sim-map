@@ -48,11 +48,11 @@ for ii = 1:height(info_table_hc)
         continue;  % skip to next study
     end
     
-    % 1. Overall mean = arithmetic mean of valid layer means
+    % Overall mean = arithmetic mean of valid layer means
     mean_HC = mean(hc_means(valid));
     mean_SZ = mean(sz_means(valid));
     
-    % 2. Convert SEM → SD, then pooled SD across valid layers (correct df)
+    % Convert SEM → SD, then pooled SD across valid layers
     sd_HC_layers = hc_sems(valid) .* sqrt(n_hc);
     sd_SZ_layers = sz_sems(valid) .* sqrt(n_sz);
     
@@ -62,14 +62,14 @@ for ii = 1:height(info_table_hc)
     sd_HC = sqrt(var_HC_pooled);
     sd_SZ = sqrt(var_SZ_pooled);
     
-    % 3. Now compute Hedges' g across groups
+    % Now compute Hedges' g across groups
     s_pooled = sqrt( ((n_hc-1)*var_HC_pooled + (n_sz-1)*var_SZ_pooled) / (n_hc + n_sz - 2) );
     d = (mean_SZ - mean_HC) / s_pooled;
     
     J = 1 - 3/(4*(n_hc + n_sz - 2) - 1);
     g = J * d;
     
-    % 4. Exact sampling variance of g
+    % Exact sampling variance of g
     var_g = J^2 * ( (n_hc + n_sz)/(n_hc*n_sz) + d^2/(2*(n_hc + n_sz)) );
     
     % Store results

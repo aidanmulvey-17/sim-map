@@ -1,9 +1,7 @@
 function figHandle = pub_format(figHandle, baseName, journal, widthType, doExport)
-    % 1. Input Handling
     if nargin < 5, doExport = false; end
     if isempty(figHandle) || ~isgraphics(figHandle, 'figure'), figHandle = gcf; end
 
-    %% 2. The Journal Database
     switch lower(journal)
         case 'nature'
             fName = 'Arial'; fSize = 7; lSize = 8; widths = [8.9, 12.0, 18.3]; 
@@ -28,12 +26,10 @@ function figHandle = pub_format(figHandle, baseName, journal, widthType, doExpor
         otherwise, colWidth = widths(1);
     end
 
-    %% 3. Figure Canvas Setup
     set(figHandle, 'Units', 'centimeters', 'Color', 'w');
     pos = get(figHandle, 'Position');
     set(figHandle, 'Position', [pos(1), pos(2), colWidth, pos(4)]);
 
-    %% 4. Process Axes & Data Styling
     black = [0 0 0]; 
     if any(strcmpi(journal, {'nature', 'cell'}))
         dataLineWidth = 0.6; markerSize = 55;

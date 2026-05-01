@@ -2,7 +2,6 @@ function ref_table = bias_correction(data_table, remove_n, cellType)
 % Input: data_table with columns g, N_HC, N_SZ, Author, Area (and optionally Abbv)
 %        remove_n = number of most negative studies to trim (0 = none)
 
-%% 1. Extract and clean data
 g = data_table.g;
 nHC = data_table.N_HC;
 nSZ = data_table.N_SZ;
@@ -23,7 +22,7 @@ if length(g) < 2
     return;
 end
 
-% Compute exact SE for Hedges' g
+% Compute SE for Hedges' g
 se = zeros(size(g));
 for i = 1:length(g)
     N = nHC(i) + nSZ(i);
@@ -34,12 +33,12 @@ for i = 1:length(g)
 end
 k_total = length(g);
 
-%% 2. Results BEFORE trimming
+%% Results BEFORE trimming
 [pooled_before, p_before, egger_b0, egger_p0] = meta_egger(g, se);
 subtitl_label_before = ['g=', num2str(pooled_before, '%.3f'), ', p(g)=', num2str(p_before, '%.3f'), '; B0=', num2str(egger_b0, '%.3f'), ', p(B0)=', num2str(egger_p0, '%.3f')];
 plot_funnel(g, se, authors, areas, [cellType ' – All studies (k=' num2str(k_total) ')'], subtitl_label_before, pooled_before);
 
-%% 3. Results AFTER trimming
+%% Results AFTER trimming
 if remove_n > 0 && remove_n < k_total
     [~, idx] = sort(g);
     rm_idx = idx(1:remove_n);
@@ -68,7 +67,7 @@ if remove_n > 0
         [cellType ' – After trimming ' num2str(remove_n) ' extreme studies'], subtitl_label_after, pooled_after);
 end
 
-%% 4. Final table
+%% Final table
 ref_table = table(...
     {cellType}, k_total, length(g_trim), remove_n, ...
     pooled_before, p_before, egger_b0, egger_p0, ...

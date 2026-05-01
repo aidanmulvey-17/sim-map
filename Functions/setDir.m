@@ -1,5 +1,5 @@
 function currentFileDirectory = setDir(varargin)
-% GCD Gets the directory of the current file and optionally manages the MATLAB path.
+% Gets the directory of the current file and optionally manages the MATLAB path.
 %
 %   currentFileDirectory = setDir()
 %   currentFileDirectory = setDir('GoPath', true)
@@ -79,7 +79,6 @@ end
 if ~isempty(foldersOption)
     goPathFlag = true;
 end
-
 
 currentFileDirectory = '';
 

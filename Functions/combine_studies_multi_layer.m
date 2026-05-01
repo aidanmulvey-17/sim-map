@@ -14,7 +14,7 @@ function output_table = combine_studies_multi_layer(input_table)
         study_indices = find(group_idx == jj);
         first_idx = study_indices(1);
         
-        % 1. Assign Metadata (Static info from the first entry of the group)
+        % Assign Metadata (Static info from the first entry of the group)
         output_table.Author(jj, 1)    = unique_combos.Author(jj);        
         output_table.Abbv(jj)         = {strjoin(input_table.Abbv(study_indices), ', ')};
         output_table.Structure(jj, 1) = unique_combos.Structure(jj);
@@ -27,7 +27,7 @@ function output_table = combine_studies_multi_layer(input_table)
         output_table.TissueBank(jj, 1)= input_table.TissueBank(first_idx);
         output_table.FixMethod(jj, 1) = input_table.FixMethod(first_idx);
         
-        % 2. Loop through each Layer (L1 to L6)
+        % Loop through each Layer (L1 to L6)
         n_obs = numel(study_indices);
         
         for L = 1:num_layers

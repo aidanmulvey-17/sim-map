@@ -2,17 +2,14 @@ function [meansTable, statsResults] = laminarBarPlot(varargin)
 % LAMINARBARPLOT Plot laminar effects and return statistical tables
 % [meansTable, statsResults] = laminarBarPlot(data1, data2, ...)
 
-% Initialize stats collection
 statsData = struct('Comparison', {}, 'Layer', {}, 'Cohens_d', {}, 'CI_Lower', {}, 'CI_Upper', {}, 'pVal', {});
 statsIdx = 1;
 
-% Pre-calculate Mean and SEM
 for j = 1:length(varargin)
     meanVals(j, :) = mean(varargin{j}, 1, 'omitnan');
     semVals(j, :) = 2*(std(varargin{j}, [], 1, 'omitnan') ./ sqrt(sum(~isnan(varargin{j}), 1)));
 end
 
-% Extract Variable Names for Labels
 labels = cell(1, nargin);
 for j = 1:nargin
     varName = inputname(j);
@@ -38,7 +35,7 @@ for i = 1:6 % Iterate through Layers
         % Error bars
         errorbar(meanVals(ii, i), yPos, semVals(ii, i), 'horizontal', 'LineStyle', 'none', 'Color', color)
         
-        % One-sample t-test (vs 0) for Stars
+        % One-sample t-test (vs 0) for stars
         [~, p_one] = ttest(varargin{ii}(:,i));
         if p_one < 0.001
             text(-2.7, yPos, '***', 'Color', color, 'FontWeight', 'bold', 'FontSize', 20)
@@ -57,7 +54,6 @@ for i = 1:6 % Iterate through Layers
             % Effect Size Calculation
             effect = meanEffectSize(x, y, 'Effect', "cohen");
             
-            % Record stats for Table output
             statsData(statsIdx).Comparison = sprintf('%s vs %s', labels{ii}, labels{jj});
             statsData(statsIdx).Layer = i;
             statsData(statsIdx).Cohens_d = effect.Effect;
