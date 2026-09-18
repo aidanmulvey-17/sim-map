@@ -1,11 +1,11 @@
-%%
-close all; clear variables; clc;
 %% Inhibitory Cell Meta-Analysis Analysis
+
+close all; clear variables; clc;
+
 folderLocation = setDir('GoPath', true);
 rmpath("Archived")
-saveFigs = 'No';
-closeFigures = 'No';
 warning ('off','all');
+
 %% Background Information
 
 areaSheet = importExcel('Raw_Data_Excel/Paper_Collection_Bookkeeping', 'Areas_Included');
@@ -633,9 +633,6 @@ set(gca, 'YDir', 'reverse', 'Box', 'off');
 text(min(xlim)+0.2, num_rows + 0.25, '\leftarrow IHC More Affected', 'FontWeight', 'bold', 'Color', 'r');
 text(max(xlim)-0.2, num_rows + 0.25, 'mRNA More Affected \rightarrow', 'HorizontalAlignment', 'right', 'FontWeight', 'bold', 'Color', 'b');
 
-% pub_format(gcf, 'Figures_01_2026/cohens_supp1', 'nature', '1.5', true);
-% saveToAI(append(folderLocation, '\Figures_01_2026'), 'IHC_vs_mRNA_Cohens');
-
 group_level_comps = [group_level_comps_IHC; group_level_comps_mRNA; ihc_mrna_stats];
 group_level_comps.p_FDR = mafdr(group_level_comps.p_value, 'BHFDR', true);
 
@@ -644,41 +641,25 @@ n_fdr_tests(end+1, :) = {"Comparisons within cell types across groups (e.g., (PV
 figure_folder = append(folderLocation, '\Submissions\Translational Psychiatry\Figures Raw\EPS\Figure2');
 
 plotForest(PV_IHC_dataframe, 'PV IHC', 'remove', 'g');
-% saveToAI(figure_folder, 'PV_IHC_forest');
 plotForest(CB_IHC_dataframe, 'CB IHC', 'dontremove', 'g');
-% saveToAI(figure_folder, 'CB_IHC_forest');
 plotForest(CR_IHC_dataframe, 'CR IHC', 'dontremove', 'g');
-% saveToAI(figure_folder, 'CR_IHC_forest');
 plotForest(SST_IHC_dataframe, 'SST IHC', 'dontremove', 'g');
-% saveToAI(figure_folder, 'SST_IHC_forest');
 
 plotForest(PV_mRNA_dataframe, 'PV mRNA', 'dontremove', 'g');
-% saveToAI(figure_folder, 'PV_mRNA_forest');
 plotForest(CB_mRNA_dataframe, 'CB mRNA', 'dontremove', 'g');
-% saveToAI(figure_folder, 'CB_mRNA_forest');
 plotForest(CR_mRNA_dataframe, 'CR mRNA', 'dontremove', 'g');
-% saveToAI(figure_folder, 'CR_mRNA_forest');
 plotForest(SST_mRNA_dataframe, 'SST mRNA', 'dontremove', 'g');
-% saveToAI(figure_folder, 'SST_mRNA_forest');
 %% Brain Effect Size Heat Maps
 input_range = 2;
 % PV_IHC_heatmap_data = effectsize2heatmap(PV_IHC_dataframe, input_range, "PV IHC");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'PV_IHC_heatmaps');
 % CB_IHC_heatmap_data = effectsize2heatmap(CB_IHC_dataframe, input_range, "CB IHC");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'CB_IHC_heatmaps');
 % CR_IHC_heatmap_data = effectsize2heatmap(CR_IHC_dataframe, input_range, "CR IHC");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'CR_IHC_heatmaps');
 % SST_IHC_heatmap_data = effectsize2heatmap(SST_IHC_dataframe, input_range, "SST IHC");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'SST_IHC_heatmaps');
 % 
 % PV_mRNA_heatmap_data = effectsize2heatmap(PV_mRNA_dataframe, input_range, "PV mRNA");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'PV_mRNA_heatmaps');
 % CB_mRNA_heatmap_data = effectsize2heatmap(CB_mRNA_dataframe, input_range, "CB mRNA");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'CB_mRNA_heatmaps');
 % CR_mRNA_heatmap_data = effectsize2heatmap(CR_mRNA_dataframe, input_range, "CR mRNA");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'CR_mRNA_heatmaps');
 % SST_mRNA_heatmap_data = effectsize2heatmap(SST_mRNA_dataframe, input_range, "SST mRNA");
-% % saveToAI(append(folderLocation, '\Figures_01_2026\HeatmapsFig(5)_Raw'), 'SST_mRNA_heatmaps');
 
 %% Publication Bias
 
@@ -694,8 +675,6 @@ t = tiledlayout(2, 4, 'TileSpacing', 'compact', 'Padding', 'compact');
 [CB_mRNA_bias_table, ~]  = bias_correction(CB_mRNA_studies, 0, 'CB mRNA', nexttile(t));
 [CR_mRNA_bias_table, ~]  = bias_correction(CR_mRNA_studies, 0, 'CR mRNA', nexttile(t));
 [SST_mRNA_bias_table, ~] = bias_correction(SST_mRNA_studies, 0, 'SST mRNA', nexttile(t));
-
-% saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\SUPP', 'SuppFig1 Publication Bias')
 
 publication_bias = vertcat(PV_IHC_bias_table, CB_IHC_bias_table, CR_IHC_bias_table, SST_IHC_bias_table, PV_mRNA_bias_table, CB_mRNA_bias_table, CR_mRNA_bias_table, SST_mRNA_bias_table);
 publication_bias.Egger_p0_FDR = mafdr(publication_bias.Egger_p0, 'BHFDR', true);
@@ -811,28 +790,7 @@ meta_regression = fitlme(regression_tbl, formula_mixed, 'Weights', regression_tb
 disp(meta_regression);
 fprintf("---------------------------------------------------\n");
 demo_stats_table = anova(meta_regression);
-disp(demo_stats_table);
-
-%%%
-% regression_tbl_reduced = table(g, var_g, dAge, dPMI,total_N, Bank, MethodType, Cell, Author, macro_area, subregion, area_group, ...
-%     'VariableNames',{'g','var_g','dAge','dPMI', 'N', 'Bank', 'MethodType', 'Cell', 'Author', 'macro_area', 'subregion', 'area_group'});
-% 
-% regression_tbl_reduced.Bank = categorical(lower(string(regression_tbl_reduced.Bank)));
-% regression_tbl_reduced.Area = categorical(lower(string(regression_tbl_reduced.area_group))); % subregion, area_group
-% regression_tbl_reduced.MethodType = categorical(lower(string(regression_tbl_reduced.MethodType)));
-% regression_tbl_reduced.Cell = categorical(lower(string(regression_tbl_reduced.Cell)));
-% regression_tbl_reduced.Author = categorical(string(regression_tbl_reduced.Author));
-% regression_tbl_reduced.Cell = reordercats(regression_tbl_reduced.Cell, {'pv', 'cb', 'sst', 'cr'});
-% 
-% regression_tbl_reduced = rmmissing(regression_tbl_reduced);
-% 
-% w = 1 ./ regression_tbl_reduced.var_g;
-% 
-% formula_reduced = 'g ~ dAge + dPMI + MethodType + Area + N + Cell + (1|Author) + (1|Bank)';
-% meta_regression_reduced = fitlme(regression_tbl_reduced, formula_reduced, 'Weights', w, 'DummyVarCoding', 'effects');
-% disp(meta_regression_reduced);
-% fprintf("---------------------------------------------------\n");
-% demo_stats_reduced = anova(meta_regression_reduced);
+disp(demo_stats_table)
 
 demo_anova = dataset2table(demo_stats_table);
 demo_anova.p_FDR = mafdr(demo_anova.pValue, 'BHFDR', true);
@@ -978,12 +936,8 @@ max_coef  = max(numeric_data, [], 1, 'omitnan');
 manuscript_reporting_tbl = table(numeric_cols', mean_coef', sd_coef', min_coef', max_coef', ...
     'VariableNames', {'Parameter', 'LOO_Mean', 'LOO_SD', 'LOO_Min', 'LOO_Max'});
 
-disp('------------------------------------------------------------');
-disp('<strong>PRISMA Sensitivity Analysis Summary for Manuscript Text</strong>');
-disp('------------------------------------------------------------');
 disp(manuscript_reporting_tbl);
 
-% ---- LOO Stability: Test if mean estimate differs from zero ----
 t_stat = mean_coef ./ (sd_coef ./ sqrt(size(numeric_data, 1)));
 df = size(numeric_data, 1) - 1;
 p_val = 2 * (1 - tcdf(abs(t_stat), df));
@@ -1316,13 +1270,6 @@ complete_study_table.Hierarchy(ismember(complete_study_table.Structure, {'Hippoc
 complete_study_table.isPE = repmat("Non-PE", height(complete_study_table), 1);
 complete_study_table.isPE(ismember(complete_study_table.Structure, pe_areas)) = "PE";
 
-% posterior = {'VCx', 'PPC', 'A1'};
-% anterior = {'ACC', 'PCC', 'BrA', 'MCx', 'PFC'};
-% complete_study_table.Region = repmat("Other", height(complete_study_table), 1);
-% complete_study_table.Region(ismember(complete_study_table.Structure, posterior)) = "Posterior";
-% complete_study_table.Region(ismember(complete_study_table.Structure, anterior)) = "Anterior";
-% complete_study_table.Region(ismember(complete_study_table.Structure, 'EC')) = "Entorhinal";
-% complete_study_table.Region(ismember(complete_study_table.Structure, 'Hippocampus')) = "Hippocampus";
 %% Add Bank and Fix to laminar table
 % this is done in get_info, but needs to be added for laminar studies
 num_ref_rows = height(complete_laminar_table);
@@ -1545,17 +1492,7 @@ for jj = 1:size(all_vars, 2)
     ylim([min(final_emms - err_bar) - 0.4, max(final_emms + err_bar) + 0.4]);
     set(gca, "view", [90 90]);
 
-    if strcmp(targetVar, 'Layer')
-        saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\Figure3', ...
-            'Fig3e Estimated Marginal Mean of Cortical Layers')
-    else
-        saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\SUPP', ...
-            ['SuppFig2 Estimated Marginal means of ', targetVar])
-    end
-
 end
-% saveToAI(append(folderLocation, '\Figures_01_2026\'), 'Laminar_EMMs');
-
 %% ---------------- H1: Layers Planned Linear Contrasts ----------------
 
 coef_names = laminar_regression.CoefficientNames;
@@ -1566,16 +1503,6 @@ hidden_layer = setdiff(all_layers, visible_layers);
 
 H_func = @(groups, regr, hidden_sum, label) arrayfun(@(n) strcmp(n,'(Intercept)') + (ismember(erase(n,label),groups)/numel(groups)) - ...
     (ismember(hidden_sum,groups)*(startsWith(n,label)/numel(groups))), regr.CoefficientNames);
-
-% H_func_int = @(groups, regr, hidden_sum, label) cell2mat(cellfun(@(n) ...
-%     ( strcmp(n,'(Intercept)') ) + ... % 1. Intercept component
-%     ( ismember(erase(n,label), groups) / numel(groups) ) - ... % 2. Main Effect inclusion
-%     ( ismember(hidden_sum, groups) * (startsWith(n,label) && ~contains(n,':')) / numel(groups) ) + ... % 3. Main Effect hidden reference correction
-%     ... % 4. Interaction Term Distribution
-%     ( contains(n,':') && any(cellfun(@(g) contains(n, [label g]) || contains(n, [g ':']), groups)) / numel(groups) ) - ... 
-%     ... % 5. Interaction Term Hidden Reference Correction
-%     ( contains(n,':') && ismember(hidden_sum, groups) * any(cellfun(@(str) startsWith(n,str) || endsWith(n,str), {label, hidden_sum})) / numel(groups)), ...
-%     regr.CoefficientNames, 'UniformOutput', false));
 
 H_BU_ALL = H_func({'L2', 'L3', 'L4'}, laminar_regression, hidden_layer, 'Layer_');
 H_BU_INPUT = H_func({'L4'}, laminar_regression, hidden_layer, 'Layer_');
@@ -1682,8 +1609,6 @@ xline(0, 'k--', 'LineWidth', 2);
 set(gca, 'YTick', 1:size(comparisons, 1), 'YTickLabel', resultsTable_lam.Comparison, 'FontSize', 11);
 xlabel('Contrast Estimate (Difference in Hedges'' g)');
 title('Laminar Contrasts');
-% saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\Figure4', ...
-%     'Fig4c Laminar Contrasts')
 %% ---------------- Hypothesis Test Regression (H2/3, Cells and Areas) ----------------
 
 input_table = complete_study_table; %(ismember(complete_study_table.Group, ["Subcortex"; "Hippocampus"]), :);
@@ -1714,11 +1639,7 @@ fprintf("<strong> Cell and Area Hypothesis Regression Test </strong>\n");
 fprintf("---------------------------------------------------\n");
 hyp_formula = 'g ~ Cell + Area + total_N + MethodType + (1|Bank) + (1|Author)';
 cell_area_regression = fitlme(cell_area_regr_tbl, hyp_formula, 'Weights', w, 'DummyVarCoding', 'effects');
-% disp(cell_area_regression);
 cell_area_stats = anova(cell_area_regression);
-% disp(cell_area_stats);
-% pe_cell_interaction = fitlme(cell_area_regr_tbl, 'g ~ Cell*isPE + total_N + MethodType + (1|Bank) + (1|Author)', 'Weights', w, 'DummyVarCoding', 'effects');
-% pe_cell_stats = anova(pe_cell_interaction);
 
 coef_table_cell_area = cell_area_regression.Coefficients;
 beta_values_H12 = coef_table_cell_area.Estimate;
@@ -1734,7 +1655,6 @@ cov_matrix = cell_area_regression.CoefficientCovariance;
 dfe = cell_area_regression.DFE;
 crit_t = tinv(0.975, dfe);
 
-% sgtitle('Adjusted Vulnerability Profile (Absolute vs. Relative Deficits)');
 Master_H2_EMM_Table = table();
 for jj = 1:size(all_vars, 2)
     targetVar = all_vars{jj};
@@ -1800,7 +1720,6 @@ for jj = 1:size(all_vars, 2)
         area_EMMs.Avg = H2_3_EMM_table;
     end
 
-    % subplot(1, size(all_vars, 2), jj);
     figure;
     hold on;
     
@@ -1830,14 +1749,6 @@ for jj = 1:size(all_vars, 2)
     grid on;
     ylim([min(sortedEMM - sortedErr) - 0.5, max(sortedEMM + sortedErr) + 0.5]);
     set(gca, "view", [90 90]);
-
-    % if strcmp(targetVar, 'Cell')
-    %     saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\Figure3', ...
-    %         'Fig3 Estimated Marginal Mean of Cells')
-    % else
-    %     saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\SUPP', ...
-    %         'SuppFig3 Estimated Marginal Mean of Areas')
-    % end
 
 end
 %% ---------------- H2: Cell Types Planned Linear Contrasts ----------------
@@ -1936,8 +1847,6 @@ set(gca, 'YTick', 1:size(comparisons, 1), 'YTickLabel', resultsTable_cell.Compar
 xlabel('Contrast Estimate (Difference in Hedges'' g)');
 title('Contrast Estimates Across Cell Types');
 ylim([0.5, size(comparisons, 1) + 0.5]);
-% saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\Figure4', ...
-%     'Fig4d Cell Type Contrasts')
 %% ---------------- H3: Areas Planned Linear Contrasts ----------------
 
 all_areas = unique(cell_area_regr_tbl.Area);
@@ -1955,8 +1864,6 @@ ec_areas = {'ec'};
 H_func = @(groups, regr, hidden_sum, label) arrayfun(@(n) strcmp(n,'(Intercept)') + (ismember(erase(n,label),groups)/numel(groups)) - ...
     (ismember(hidden_sum,groups)*(startsWith(n,label)/numel(groups))), regr.CoefficientNames);
 
-% H_PE = H_func(pe_areas, cell_area_regression, hidden_area, 'Area_');
-% H_NonPE = H_func(non_pe_areas, cell_area_regression, hidden_area, 'Area_');
 H_posterior = H_func({'vcx', 'ppc', 'a1'}, cell_area_regression, hidden_area, 'Area_');
 H_anterior = H_func({'acc', 'pcc', 'bra', 'mcx', 'pfc'}, cell_area_regression, hidden_area, 'Area_');
 H_ec = H_func({'ec'}, cell_area_regression, hidden_area, 'Area_');
@@ -1998,40 +1905,6 @@ ylim([-0.8 -0.5])
 ylabel('Estimated Marginal Mean');
 title('FB Hierarchy EMM');
 
-sensory_motor_areas = {'vcx', 'a1', 'mcx'};
-heteromodal_areas = {'ppc', 'pfc', 'bra'};
-paralimbic_areas = {'pcc', 'acc'};
-limbic_areas = {'amygdala', 'ec', 'hippocampus'};
-
-H_primary_motor_sensor = H_func(sensory_motor_areas, cell_area_regression, hidden_area, 'Area_');
-H_heteromodal = H_func(heteromodal_areas, cell_area_regression, hidden_area, 'Area_');
-H_paralimbic = H_func(paralimbic_areas, cell_area_regression, hidden_area, 'Area_');
-H_limbic = H_func(limbic_areas, cell_area_regression, hidden_area, 'Area_');
-
-mesulam_hierarchy_EMMs = [H_primary_motor_sensor * cell_area_regression.Coefficients.Estimate;
-    H_heteromodal * cell_area_regression.Coefficients.Estimate;
-    H_paralimbic * cell_area_regression.Coefficients.Estimate;
-    H_limbic * cell_area_regression.Coefficients.Estimate;
-    ];
-
-figure;
-plot(1:height(mesulam_hierarchy_EMMs), mesulam_hierarchy_EMMs,  'o-', 'LineWidth', 2, 'MarkerSize', 8);
-xticks(1:height(mesulam_hierarchy_EMMs))
-xticklabels({'Sensory-Motor', 'Heteromodal', 'Paralimbic', 'Limbic'});
-ylim([-0.8 -0.5])
-ylabel('Estimated Marginal Mean');
-title('Mesulam Hierarchy EMM');
-
-% comparisons = {
-%     'Sensory-Motor vs Heteromodal', sensory_motor_areas, heteromodal_areas;
-%     'Sensory-Motor vs Paralimbic', sensory_motor_areas, paralimbic_areas;
-%     'Sensory-Motor vs Limbic', sensory_motor_areas, limbic_areas;
-%     'Heteromodal vs Paralimbic', heteromodal_areas, paralimbic_areas;
-%     'Heteromodal vs Limbic', heteromodal_areas, limbic_areas;
-%     'Paralimbic vs Limbic', paralimbic_areas, limbic_areas;
-%     'PE vs non-PE', pe_areas, non_pe_areas
-% };
-
 comparisons = {
     'Posterior vs Anterior', {'vcx', 'ppc', 'a1'}, {'acc', 'pcc', 'bra', 'mcx', 'pfc'};
     'Posterior vs Hippocampus', {'vcx', 'ppc', 'a1'}, {'hippocampus'};
@@ -2046,8 +1919,6 @@ comparisons = {
     % 'Heteromodal vs Limbic', heteromodal_areas, limbic_areas;
     % 'Paralimbic vs Limbic', paralimbic_areas, limbic_areas
     };
-
-% comparisons = {'PE vs non-PE', pe_areas, non_pe_areas};
 
 results_area = struct('Comparison', {}, 'Estimate', {}, 'SE', {}, 'PValue', {}, 'LowerCI', {}, 'UpperCI', {});
 
@@ -2099,8 +1970,6 @@ set(gca, 'YTick', 1:size(comparisons, 1), 'YTickLabel', resultsTable_area.Compar
 xlabel('Contrast Estimate (Difference in Hedges'' g)');
 title('Contrast Estimates Across Brain Areas');
 ylim([0.5, size(comparisons, 1) + 0.5]);
-% saveToAI('/Users/aidanmulvey/Library/CloudStorage/OneDrive-Vanderbilt/Bastos Lab/Meta_analysis\Submissions\Translational Psychiatry\Figures Raw\EPS\Figure4', ...
-%     'Fig4e Brain Area and Hierarchical Contrasts')
 %% Save Tables to Excel Files
 % dEMM
 resultsTable_lam.p_FDR = mafdr(resultsTable_lam.PValue, 'BHFDR', true);
@@ -2114,7 +1983,6 @@ n_fdr_tests(end+1, :) = {"BU/TD dEMM Cell/Area", height(BU_TD_CellArea_Tests)};
 
 BU_TD_Hypothesis_Tests = [resultsTable_lam; BU_TD_CellArea_Tests];
 disp(BU_TD_Hypothesis_Tests)
-% writetable(BU_TD_Hypothesis_Tests, 'HypothesisTests.csv')
 
 % Anova
 lam_stats_table = dataset2table(lam_stats);
@@ -2191,9 +2059,6 @@ for jj = 1:size(cell_types, 2)
 
     hyp_formula = 'g ~ Area + total_N + MethodType + (1|Bank) + (1|Author)';
     cell_type_indv = fitlme(cell_indv_regr_tbl, hyp_formula, 'Weights', w, 'DummyVarCoding', 'effects');
-    % disp(cell_type_indv);
-    % cell_indv_stats = anova(cell_type_indv);
-    % disp(cell_indv_stats);
 
     coef_table_cell_indv = cell_type_indv.Coefficients;
     beta_values_cell_indv = coef_table_cell_indv.Estimate;
@@ -2332,7 +2197,6 @@ colors = [0 0 0; 0 0.4 0.7; 0.466 0.674 0.188; 0.850 0.325 0.098; 0.301 0.745 0.
 figure('Position', [100, 100, 800, 900]); % Adjust figure size for better spacing
 hold on;
 
-% Expand the axis limits to give more breathing room per area block
 ylim_padding = 0.25; 
 set(gca, 'YLim', [0.5 - ylim_padding, num_groups + 0.5 + ylim_padding]);
 
@@ -2348,7 +2212,6 @@ for a = 1:num_groups
     k = numel(valid_cell_indices);
     if k == 0; continue; end
     
-    % Spread out markers more dynamically to avoid overlap
     if k == 1
         local_offsets = 0;
     else
@@ -2477,7 +2340,6 @@ for jj = 1:size(cell_types, 2)
         all_p_mean = [visible_p_vs_mean(:); hidden_p_vs_mean];
         all_p_zero = [visible_p_vs_zero(:); hidden_p_vs_zero];
         
-        % SORT BY LAYER NAME (L1 to L6) INSTEAD OF EMM MAGNITUDE
         [sortedLabels, sortIdx] = sort(all_labels);
         sortedEMM   = all_emms(sortIdx);
         sortedErr   = all_ses(sortIdx);
@@ -2568,11 +2430,9 @@ pos_err = high_ci_mat - emm_mat;
 num_groups = numel(unique_layers);
 num_cells = numel(fields);
 
-% Increased figure height for vertical breathing room
-figure('Position', [100, 100, 900, 1100]);
+figure;
 hold on;
 
-% Expand the axis limits to give more breathing room per layer block
 ylim_padding = 0.25; 
 set(gca, 'YLim', [0.5 - ylim_padding, num_groups + 0.5 + ylim_padding]);
 
@@ -2588,7 +2448,6 @@ for a = 1:num_groups
     k = numel(valid_cell_indices);
     if k == 0; continue; end
     
-    % Wider spacing for cell types within the same layer
     if k == 1
         local_offsets = 0;
     else
@@ -2610,7 +2469,6 @@ for a = 1:num_groups
             h_plots(cell_idx) = p;
         end
         
-        % Significance star positioned at the left tail (lower CI bound)
         if ~isnan(p_zero_mat(a, cell_idx)) && p_zero_mat(a, cell_idx) < 0.05
             star_x = low_ci_mat(a, cell_idx) - 0.15; 
             text(star_x, y_pos, '*', 'Color', 'k', ...
@@ -2634,7 +2492,6 @@ xlim([-3 2]);
 legend_mask = isgraphics(h_plots);
 h_leg = legend(h_plots(legend_mask), fields(legend_mask), 'Location', 'northwest', 'Box', 'off');
 set(h_leg, 'FontName', 'Arial', 'FontSize', 12);
-% ax1 = gca; set(ax1, 'Box', 'off', 'TickDir', 'out', 'Color', 'none', 'LineWidth', 1.2, 'LooseInset', max(get(gca, 'TightInset'), 0.02), 'TickLength', [0.02 0.025]);
 %% Summary of Stats
 % Raw Data
 Table_of_All_Studies = complete_ref_table;
@@ -2689,209 +2546,3 @@ Cell_Area_EMMs = Master_H2_EMM_Table; % ID: b001
 Cell_Layer_EMMs = Master_H1_EMM_table; % ID: b002
 Cells_by_Layer_EMMs = layer_EMMs; % ID: b003
 Cells_by_Area_EMMs = area_EMMs; % ID: b004
-
-%%
-dataframes = struct();
-dataframes.PV_IHC = PV_IHC_dataframe;
-dataframes.CB_IHC = CB_IHC_dataframe;
-dataframes.CR_IHC = CR_IHC_dataframe;
-dataframes.SST_IHC = SST_IHC_dataframe;
-dataframes.PV_mRNA = PV_mRNA_dataframe;
-dataframes.CB_mRNA = CB_mRNA_dataframe;
-dataframes.CR_mRNA = CR_mRNA_dataframe;
-dataframes.SST_mRNA = SST_mRNA_dataframe;
-
-df_labels = fieldnames(dataframes);
-
-for jj = 1:length(df_labels)
-    current_struct = dataframes.(df_labels{jj});
-    unique_areas = unique(current_struct.Structure);
-
-    var_name = [df_labels{jj} '_summary'];
-    
-    var_table = table();
-    for ii = 1:length(unique_areas)
-        unique_structure = unique_areas(ii);
-
-        working_data = current_struct(ismember(current_struct.Structure, unique_structure), :);
-
-        new_row = table(unique_structure, ...
-                        mean(working_data.g, 'omitnan'), ...
-                        height(working_data), ...
-                        height(unique(working_data.Author)), ...
-                        'VariableNames', {'Structure', 'mean_g', 'N_o', 'N_s'});
-                    
-        var_table = [var_table; new_row];
-
-    end
-
-    dataframes.(var_name) = var_table;
-end
-
-
-%% Formatting and Extracting Effect Sizes for Supp Table 1
-
-methods = unique(complete_ref_table.MethodType);
-method_tables = struct();
-
-for jj = 1:numel(methods)
-    current_method = methods(jj);
-    
-    % Ensure method name is safe for structure field naming
-    safeMethodName = matlab.lang.makeValidName(string(current_method));
-    
-    input_ref = complete_ref_table(strcmp(complete_ref_table.MethodType, current_method), :);
-    
-    if height(input_ref) == 0
-        continue;
-    end
-    
-    Authors = input_ref.Author;
-    Areas = input_ref.Abbv;
-    CellTypes = input_ref.CellType;
-    g_vals = input_ref.g;
-    var_g_vals = input_ref.var_g;
-    
-    formattedData = cell(height(input_ref), 1);
-    for i = 1:height(input_ref)
-        formattedData{i} = sprintf('%s: %.3f ± %.3f', Areas{i}, g_vals(i), var_g_vals(i));
-    end
-    
-    T_work = table(Authors, CellTypes, formattedData, 'VariableNames', {'Author', 'CellType', 'Metric'});
-    [G, authorKeys, cellKeys] = findgroups(T_work.Author, T_work.CellType);
-    combinedMetrics = splitapply(@(x) {strjoin(x, newline)}, T_work.Metric, G);
-    T_grouped = table(authorKeys, cellKeys, combinedMetrics, 'VariableNames', {'Author', 'CellType', 'CombinedMetrics'});
-    
-    uniqueAuthors = unique(T_grouped.Author);
-    uniqueCellTypes = unique(T_grouped.CellType);
-    numAuthors = length(uniqueAuthors);
-    numCellTypes = length(uniqueCellTypes);
-    
-    validCellNames = matlab.lang.makeValidName(string(uniqueCellTypes));
-    dataCell = cell(numAuthors, numCellTypes + 1);
-    dataCell(:, 1) = uniqueAuthors;
-    
-    for i = 1:numAuthors
-        currAuthor = uniqueAuthors{i};
-        for j = 1:numCellTypes
-            currCellType = uniqueCellTypes{j};
-            matchIdx = strcmp(T_grouped.Author, currAuthor) & strcmp(T_grouped.CellType, currCellType);
-            if any(matchIdx)
-                dataCell{i, j + 1} = T_grouped.CombinedMetrics{matchIdx};
-            else
-                dataCell{i, j + 1} = 'NA';
-            end
-        end
-    end
-    
-    varNames = [{'Author'}, cellstr(validCellNames)'];
-    T_final = cell2table(dataCell, 'VariableNames', varNames);
-    
-    desiredOrder = {'PV', 'CB', 'CR', 'SST'};
-    existingCols = T_final.Properties.VariableNames;
-    presentCols = desiredOrder(ismember(desiredOrder, existingCols));
-    otherCols = setdiff(existingCols, [{'Author'}, presentCols], 'stable');
-    newColOrder = [{'Author'}, presentCols, otherCols];
-    T_final = T_final(:, newColOrder);
-    
-    for col = 2:width(T_final)
-        T_final.(col) = string(T_final{:, col});
-    end
-    
-    method_tables.(safeMethodName) = T_final;
-end
-%%
-methods = unique(complete_laminar_table.MethodType);
-
-for jj = 1:numel(methods)
-    current_method = methods(jj);
-
-    method_name = append(current_method, "_Laminar");
-    
-    input_ref = complete_laminar_table(strcmp(complete_laminar_table.MethodType, current_method), :);
-    if height(input_ref) == 0, continue; end
-    
-    Authors = input_ref.Author;
-    Areas = input_ref.Abbv;
-    CellTypes = input_ref.CellType;
-    
-    % 1. Build multi-laminar text string for each row (L1 to L6)
-    formattedData = cell(height(input_ref), 1);
-    for i = 1:height(input_ref)
-        lamText = {};
-        for L = 1:6
-            g_colName = sprintf('L%d_g', L);
-            v_colName = sprintf('L%d_var_g', L);
-            
-            % Check if columns exist and value is not NaN
-            if any(strcmp(input_ref.Properties.VariableNames, g_colName))
-                g_val = input_ref{i, g_colName};
-                v_val = input_ref{i, v_colName};
-                
-                if ~isnan(g_val)
-                    lamStr = sprintf('%s (L%d): %.3f ± %.3f', Areas{i}, L, g_val, v_val);
-                    lamText{end+1} = lamStr;
-                end
-            end
-        end
-        formattedData{i} = strjoin(lamText, newline);
-    end
-    
-    T_work = table(Authors, CellTypes, formattedData, 'VariableNames', {'Author', 'CellType', 'Metric'});
-    [G, authorKeys, cellKeys] = findgroups(T_work.Author, T_work.CellType);
-    combinedMetrics = splitapply(@(x) {strjoin(x, newline)}, T_work.Metric, G);
-    T_grouped = table(authorKeys, cellKeys, combinedMetrics, 'VariableNames', {'Author', 'CellType', 'CombinedMetrics'});
-    
-    % 2. Dynamically extract unique authors present in this method subset
-    uniqueAuthors = unique(T_grouped.Author);
-    uniqueCellTypes = unique(T_grouped.CellType);
-    numAuthors = length(uniqueAuthors);
-    numCellTypes = length(uniqueCellTypes);
-    
-    validCellNames = matlab.lang.makeValidName(string(uniqueCellTypes));
-    dataCell = cell(numAuthors, numCellTypes + 1);
-    dataCell(:, 1) = uniqueAuthors;
-    
-    % 3. Populate data cells
-    for i = 1:numAuthors
-        currAuthor = uniqueAuthors{i};
-        for j = 1:numCellTypes
-            currCellType = uniqueCellTypes{j};
-            
-            matchIdx = strcmp(T_grouped.Author, currAuthor) & ...
-                       strcmp(T_grouped.CellType, currCellType);
-                   
-            if any(matchIdx)
-                dataCell{i, j + 1} = strjoin(T_grouped.CombinedMetrics(matchIdx), newline);
-            else
-                dataCell{i, j + 1} = 'NA';
-            end
-        end
-    end
-    
-    varNames = [{'Author'}, cellstr(validCellNames)'];
-    T_final = cell2table(dataCell, 'VariableNames', varNames);
-    
-    % Reorder columns
-    desiredOrder = {'PV', 'CB', 'CR', 'SST'};
-    existingCols = T_final.Properties.VariableNames;
-    presentCols = desiredOrder(ismember(desiredOrder, existingCols));
-    otherCols = setdiff(existingCols, [{'Author'}, presentCols], 'stable');
-    T_final = T_final(:, [{'Author'}, presentCols, otherCols]);
-    
-    % Convert columns to string to avoid quotes in Excel
-    for col = 2:width(T_final)
-        T_final.(col) = string(T_final{:, col});
-    end
-    
-    method_tables.(method_name) = T_final;
-    % writetable(T_final, sprintf('laminar_meta_analysis_%s.xlsx', char(safeMethodName)));
-end
-%%
-
-CB_studies = complete_study_table(complete_study_table.CellType == "CB", :);
-
-CB_removed_pyrams = complete_study_table.g(ismember(CB_studies.Author, ["Tooney & Chahl, 2004"; "Daviss & Lewis, 1995"]));
-CB_kept_pyrams = complete_study_table.g(~ismember(CB_studies.Author, ["Tooney & Chahl, 2004"; "Daviss & Lewis, 1995"]));
-
-compute_cohens(CB_removed_pyrams, CB_kept_pyrams, "CB Studies Pyramidal")
